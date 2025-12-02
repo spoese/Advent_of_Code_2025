@@ -38,7 +38,7 @@ for (i in 1:nrow(new_instructions_df)) {
 count
 
 #Part 2
-
+tictoc::tic()
 instructions_df[rep(1, each = instructions_df$steps[1]), ]
 
 
@@ -67,3 +67,4 @@ for (i in 1:nrow(new_instructions_df)) {
   # print(pos)
 }
 count
+tictoc::toc()

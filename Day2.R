@@ -33,3 +33,35 @@ for (i in 1:nrow(for_use)) {
 }
 
 # Part 2
+
+# sum <- 0
+all_ids <- c()
+for (i in 1:nrow(for_use)) {
+  for (j in for_use$lower[i]:for_use$upper[i]) {
+    divisors <- numbers::divisors(str_length(j))
+    # invalid_ids <- c()
+    for (d in divisors) {
+      if (d != 1) {
+        segment_length <- str_length(j) / d
+        segments <- c()
+        for (k in 0:(d - 1)) {
+          segments <- c(
+            segments,
+            str_sub(
+              j,
+              start = k * segment_length + 1,
+              end = (k + 1) * segment_length
+            )
+          )
+        }
+        if (length(unique(segments)) == 1) {
+          # invalid_ids <- c(invalid_ids, j)
+          all_ids <- unique(c(all_ids, j))
+        }
+        # sum <- sum + sum(unique(invalid_ids))
+      }
+    }
+  }
+}
+# sum
+sum(all_ids)

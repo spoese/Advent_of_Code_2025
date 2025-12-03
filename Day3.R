@@ -1,15 +1,15 @@
 library(tidyverse)
 
 # Sample data
-batteries <- c(
-  "987654321111111",
-  "811111111111119",
-  "234234234234278",
-  "818181911112111"
-)
+# batteries <- c(
+#   "987654321111111",
+#   "811111111111119",
+#   "234234234234278",
+#   "818181911112111"
+# )
 
 # Actual data
-# batteries <- read_lines("Day3")
+batteries <- read_lines("Day3")
 
 # Part 1
 
@@ -27,6 +27,7 @@ sum_jolts
 
 # Part 2
 
+tictoc::tic()
 values <- c()
 for (i in 1:length(batteries)) {
   temp <- as.numeric(unlist(str_split(batteries[i], "")))
@@ -35,9 +36,11 @@ for (i in 1:length(batteries)) {
   for (j in 11:0) {
     target <- temp[(max_idx + 1):(length(temp) - j)]
     max_val <- max(target)
-    max_idx <- min(which(target == max_val))
+    cand_idx <- which(temp == max_val)
+    max_idx <- min(cand_idx[cand_idx > max_idx])
     jolt <- paste0(jolt, max_val)
   }
   values <- c(values, jolt)
 }
-values
+format(sum(as.numeric(values)), scientific = FALSE)
+tictoc::toc()

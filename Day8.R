@@ -85,3 +85,30 @@ circuit_lengths <- lapply(circuits, length) |>
 circuit_lengths |> prod()
 
 #Part 2
+all_data_dists <- data_tbl |>
+  left_join(data_tbl, by = character()) |>
+  filter(box_num.x < box_num.y) |>
+  mutate(dist = sqrt((x.x - x.y)^2 + (y.x - y.y)^2 + (z.x - z.y)^2)) |>
+  select(box_num.x, box_num.y, dist) |>
+  arrange(dist)
+
+vals <- 1:length(data)
+names(vals) <- as.character(vals)
+my_hash <- list2env(as.list(vals))
+
+for (i in 1:nrow(all_data_dists)) {
+  box1 <- as.character(all_data_dists$box_num.x[i])
+  box2 <- as.character(all_data_dists$box_num.y[i])
+  if (exists(box1, envir = my_hash, inherits = FALSE)) {
+    rm(list = box1, envir = my_hash)
+  }
+  if (exists(box2, envir = my_hash, inherits = FALSE)) {
+    rm(list = box2, envir = my_hash)
+  }
+  if (length(my_hash) == 0) {
+    junction <- c(box1, box2)
+    break
+  }
+}
+as.numeric(data_tbl$x[as.numeric(junction[1])]) *
+  as.numeric(data_tbl$x[as.numeric(junction[2])])
